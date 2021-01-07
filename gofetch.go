@@ -38,16 +38,15 @@ func getDistro() string {
 func getUptime() string {
 	uptime, err := ioutil.ReadFile("/proc/uptime")
 	check(err)
-	upSplit := strings.Split(string(uptime), ".")[0]
-	fmt.Println("#####")
 
-	now := time.Now()
+	upSplit := strings.Split(string(uptime), ".")[0]
 	upInSeconds, err := strconv.Atoi(upSplit)
 	check(err)
 
-	after := now.Add(-time.Duration(upInSeconds) * time.Second)
+	now := time.Now()
+	unformattedUptime := now.Add(-time.Duration(upInSeconds) * time.Second)
 
-	return formatSince(after)
+	return formatSince(unformattedUptime)
 }
 
 func formatSince(t time.Time) string {
@@ -88,14 +87,9 @@ func getProductName() string {
 }
 
 func main() {
-	hostname := getHostname()
-	distro := getDistro()
-	kernel := getKernel()
-	uptime := getUptime()
-
-	fmt.Println(hostname)
-	fmt.Println(distro)
-	fmt.Println(uptime)
-	fmt.Println(kernel)
+	fmt.Println(getHostname())
+	fmt.Println(getDistro())
+	fmt.Println(getUptime())
+	fmt.Println(getKernel())
 	fmt.Println(getProductName())
 }
